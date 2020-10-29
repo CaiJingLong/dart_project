@@ -70,7 +70,7 @@ class Dependency {
       }
       final packageDirectory = packageInfo.packageDirectory;
       return Package(packageDirectory, rootPackage);
-    } on Exception catch (e, st) {
+    } on Exception {
       return null;
     }
   }
