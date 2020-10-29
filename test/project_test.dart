@@ -4,29 +4,50 @@ import 'package:project/project.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Current project test', () {
-    Package project;
+  group('Extension test', () {
+    test('directory test', () {
+      expect(Directory('lib').name, 'lib');
+      expect(Directory('lib/').name, 'lib');
+      expect(File('pubspec.yaml').name, 'pubspec.yaml');
+    });
+  });
+
+  group('Current library', () {
+    Package package;
 
     setUp(() {
-      project = Package(Directory('.'));
+      package = Package(Directory('.'));
     });
 
-    test('Project name', () {
-      expect(project.name, 'project');
+    test('basic information', () {
+      expect(package != null, true);
+      expect(package.name, 'project');
+      expect(package.isFlutter, false);
+      expect(package.packageDir.existsSync(), true);
+      expect(package.yamlFile.existsSync(), true);
+      expect(package.rootPackage, package);
     });
 
-    test('Project dependencies', () {
-      final deps = project.dependencies;
+    test('dependencies', () {
+      final deps = package.dependencies;
 
       expect(deps[0].name, 'yaml');
       expect(deps[1].name, 'path');
 
       expect(deps[0].type, DependencyType.pub);
       expect(deps[1].type, DependencyType.pub);
+
+      final dep1 = deps[0];
+      expect(dep1.name, 'yaml');
+
+      for (final dep in deps) {
+        expect(dep.rootPackage, package);
+        expect(dep.package.rootPackage, package);
+      }
     });
 
-    test('Project dev_dependencies', () {
-      final deps = project.devDependencies;
+    test('dev_dependencies', () {
+      final deps = package.devDependencies;
 
       expect(deps[0].name, 'pedantic');
       expect(deps[1].name, 'test');
@@ -34,7 +55,37 @@ void main() {
       expect(deps[0].type, DependencyType.pub);
       expect(deps[1].type, DependencyType.pub);
 
-      print(deps[0].version);
+      for (final dep in deps) {
+        expect(dep.rootPackage, package);
+        expect(dep.package.rootPackage, package);
+      }
+    });
+  });
+
+  group('Flutter project', () {
+    Package package;
+    setUp(() {
+      package = Package.fromPath('example/flutter_project');
+    });
+
+    test('basic information', () {
+      expect(package.name, 'flutter_project');
+      expect(package.isFlutter, true);
+
+      final flutterInfo = package.flutterInfo;
+      expect(flutterInfo.useMaterialDesign, true);
+
+      expect(flutterInfo.haveAndroid, true);
+      expect(flutterInfo.haveIOS, true);
+      expect(flutterInfo.haveMacOS, true);
+      expect(flutterInfo.haveWeb, true);
+      expect(flutterInfo.haveLinux, false);
+      expect(flutterInfo.haveWindows, false);
+    });
+
+    test('analysis', () {
+      final flutterInfo = package.flutterInfo;
+      expect(flutterInfo.isApplication, true);
     });
   });
 }

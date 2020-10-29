@@ -23,11 +23,11 @@ void printPktInfo(Package pkg, int level, [bool showInfo = true]) {
     print('$ouputName ...');
     return;
   }
-  print(ouputName);
+  print('$ouputName${pkg.version}');
 
   names.add(name);
   final space = tab(level);
-  print('${space}version: ${pkg.version}');
+  // print('${space}version: ${pkg.version}');
   if (showInfo) {
     print('${space}description: ${pkg.description}');
     print('${space}local path: ${pkg.packageDir.path}');

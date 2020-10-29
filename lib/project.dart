@@ -6,3 +6,5 @@ library project;
 export 'src/project_base.dart';
 export 'src/packages_file_info.dart';
 export 'src/dependency.dart';
+
+export 'package:pub_semver/pub_semver.dart';

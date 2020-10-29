@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:pub_semver/pub_semver.dart';
 import 'package:yaml/yaml.dart';
+import 'package:path/path.dart' as path_library;
 
 import 'dependency.dart';
+import 'flutter_info.dart';
 import 'packages_file_info.dart';
 
 /// The Package
@@ -49,12 +52,20 @@ class Package {
   /// The version of the yaml file.
   String get version => yamlMap['version'];
 
+  /// The sem version of the [version].
+  Version get semVersion => Version.parse(version);
+
   /// The home page of the yaml file.
   String get homepage => yamlMap['homepage'];
 
   /// The value of the yaml map.
   T configValue<T>(String key) {
     return yamlMap[key];
+  }
+
+  /// The [yamlMap] contains the [key].
+  bool containsKey(String key) {
+    return yamlMap.containsKey(key);
   }
 
   /// Your dependencies of the yaml file.
@@ -92,10 +103,40 @@ class Package {
 
     return _packageFileInfo;
   }
+
+  /// Whether it is a flutter project.
+  bool get isFlutter => containsKey('flutter');
+
+  /// The flutter info
+  FlutterInfo get flutterInfo {
+    assert(isFlutter);
+    return FlutterInfo(
+      map: yamlMap['flutter'],
+      rootDir: packageDir,
+    );
+  }
 }
 
-extension _DirExt on Directory {
+extension DirExt on Directory {
   File child(String name) {
     return File('$path/$name');
+  }
+
+  Directory childDir(String name) {
+    return Directory('$path/$name');
+  }
+}
+
+extension FileSystemEntityExt on FileSystemEntity {
+  String get name {
+    final sep = path_library.separator;
+    var p = absolute.path;
+    if (p.endsWith(sep)) {
+      return p
+          .split(path_library.separator)
+          .lastWhere((element) => element.isNotEmpty);
+    } else {
+      return p.split(path_library.separator).last;
+    }
   }
 }
