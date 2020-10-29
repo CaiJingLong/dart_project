@@ -63,9 +63,16 @@ class Dependency {
   }
 
   Package get package {
-    final packageInfo = rootPackage.packageFileInfo[name];
-    final packageDirectory = packageInfo.packageDirectory;
-    return Package(packageDirectory, rootPackage);
+    try {
+      final packageInfo = rootPackage.packageFileInfo[name];
+      if (packageInfo == null) {
+        return null;
+      }
+      final packageDirectory = packageInfo.packageDirectory;
+      return Package(packageDirectory, rootPackage);
+    } on Exception catch (e, st) {
+      return null;
+    }
   }
 
   String get version => package.version;

@@ -16,14 +16,17 @@ class Package {
     return Package(Directory(path), rootPackage);
   }
 
-  /// The root directory of the project.
+  /// The root directory of the package.
   final Directory packageDir;
 
-  /// The pubspec.yaml file of the project.
+  /// The pubspec.yaml file of the package.
   final File yamlFile;
 
   Package _rootPackage;
 
+  /// The root package of the package.
+  ///
+  /// Your main method.
   Package get rootPackage {
     _rootPackage ??= this;
     return _rootPackage;
@@ -37,16 +40,29 @@ class Package {
     return _yamlMap;
   }
 
-  /// The name of the project.
+  /// The name of the yaml file.
   String get name => yamlMap['name'];
+
+  /// The description of the yaml file.
   String get description => yamlMap['description'];
+
+  /// The version of the yaml file.
   String get version => yamlMap['version'];
+
+  /// The home page of the yaml file.
   String get homepage => yamlMap['homepage'];
 
+  /// The value of the yaml map.
+  T configValue<T>(String key) {
+    return yamlMap[key];
+  }
+
+  /// Your dependencies of the yaml file.
   List<Dependency> get dependencies {
     return _dependencies('dependencies');
   }
 
+  /// Your dev_dependencies of the yaml file.
   List<Dependency> get devDependencies {
     return _dependencies('dev_dependencies');
   }
@@ -69,6 +85,7 @@ class Package {
 
   PackageFileInfo _packageFileInfo;
 
+  /// The .package file info, you must run `pub get` or `flutter pub get` to make it.
   PackageFileInfo get packageFileInfo {
     _packageFileInfo ??=
         PackageFileInfo(File('${rootPackage.packageDir.path}/.packages'));
