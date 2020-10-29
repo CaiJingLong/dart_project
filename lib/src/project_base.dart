@@ -115,6 +115,10 @@ class Package {
       package: this,
     );
   }
+
+  File childFile(String key) {
+    return packageDir.child(key);
+  }
 }
 
 extension DirExt on Directory {
@@ -141,6 +145,6 @@ extension FileSystemEntityExt on FileSystemEntity {
   }
 
   bool identicalOther(FileSystemEntity other) {
-    return FileSystemEntity.identicalSync(path, other.path);
+    return FileSystemEntity.identicalSync(absolute.path, other.absolute.path);
   }
 }

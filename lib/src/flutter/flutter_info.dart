@@ -83,15 +83,17 @@ class FlutterInfo {
     for (final String asset in list) {
       if (asset.endsWith('/')) {
         final result = FlutterAsset.fromDirectory(
-          rootDir.childDir(asset),
+          asset,
           assets,
+          package,
         );
         assets.addAll(result);
       } else {
         assets.add(
           FlutterAsset(
-            rootDir.child(asset),
+            asset,
             assets,
+            package,
           ),
         );
       }

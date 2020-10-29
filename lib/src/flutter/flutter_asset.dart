@@ -4,22 +4,31 @@ import 'dart:io';
 import '../project_base.dart';
 
 class FlutterAsset {
-  final File file;
+  FlutterAsset(this.key, this._assets, this.package)
+      : file = package.childFile(key);
+
+  static List<FlutterAsset> fromDirectory(
+    String dirAsset,
+    List<FlutterAsset> _assets,
+    Package package,
+  ) {
+    final dir = package.packageDir.childDir(dirAsset);
+    return dir.listSync().whereType<File>().map((e) {
+      final name = e.name;
+      final key = '$dir$name';
+      return FlutterAsset(key, _assets, package);
+    }).toList();
+  }
+
+  final String key;
 
   final List<FlutterAsset> _assets;
 
-  FlutterAsset(this.file, this._assets);
+  final Package package;
 
-  static List<FlutterAsset> fromDirectory(
-    Directory directory,
-    List<FlutterAsset> _assets,
-  ) {
-    return directory
-        .listSync()
-        .whereType<File>()
-        .map((e) => FlutterAsset(e, _assets))
-        .toList();
-  }
+  final File file;
+
+  String get assetKey {}
 
   FlutterAssetVariants _variants;
 
@@ -36,6 +45,7 @@ class FlutterAsset {
         continue;
       }
 
+      // fix it.
       final otherFile = asset.file;
       if (otherFile.name == file.name &&
           otherFile.parent.parent.identicalOther(file.parent)) {
