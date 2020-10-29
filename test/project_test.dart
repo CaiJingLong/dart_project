@@ -6,6 +6,8 @@ import 'package:test/test.dart';
 void main() {
   group('Extension test', () {
     test('directory test', () {
+      expect(FileSystemEntity.identicalSync('lib/', 'lib'), true);
+
       expect(Directory('lib').name, 'lib');
       expect(Directory('lib/').name, 'lib');
       expect(File('pubspec.yaml').name, 'pubspec.yaml');
@@ -86,6 +88,22 @@ void main() {
     test('analysis', () {
       final flutterInfo = package.flutterInfo;
       expect(flutterInfo.isApplication, true);
+    });
+
+    test('assets', () {
+      final flutterInfo = package.flutterInfo;
+      final assets = flutterInfo.assets;
+
+      expect(assets.length, 2);
+
+      final asset = assets[0];
+
+      final variants = asset.getVariants();
+      expect(variants.length, 2);
+
+      expect(variants.containsKey('default'), true);
+      expect(variants.containsKey('2.0x'), true);
+      expect(variants.containsKey('3.0x'), false);
     });
   });
 }

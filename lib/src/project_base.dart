@@ -5,7 +5,7 @@ import 'package:yaml/yaml.dart';
 import 'package:path/path.dart' as path_library;
 
 import 'dependency.dart';
-import 'flutter_info.dart';
+import 'flutter/flutter_info.dart';
 import 'packages_file_info.dart';
 
 /// The Package
@@ -112,7 +112,7 @@ class Package {
     assert(isFlutter);
     return FlutterInfo(
       map: yamlMap['flutter'],
-      rootDir: packageDir,
+      package: this,
     );
   }
 }
@@ -138,5 +138,9 @@ extension FileSystemEntityExt on FileSystemEntity {
     } else {
       return p.split(path_library.separator).last;
     }
+  }
+
+  bool identicalOther(FileSystemEntity other) {
+    return FileSystemEntity.identicalSync(path, other.path);
   }
 }
