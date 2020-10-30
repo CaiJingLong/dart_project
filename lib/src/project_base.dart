@@ -8,13 +8,25 @@ import 'dependency.dart';
 import 'flutter/flutter_info.dart';
 import 'packages_file_info.dart';
 
-/// The Package
+/// [Package], usually the entry class.
+///
+/// ```dart
+/// final package = Package.fromPath('flutter_project');
+///
+/// print(package.name);
+/// ```
 class Package {
+  /// Use [packageDir] to create a [Package].
+  ///
+  /// Users generally do not need to consider [rootPackage].
   Package(this.packageDir, [Package rootPackage])
       : assert(packageDir.existsSync()),
         _rootPackage = rootPackage,
         yamlFile = packageDir.child('pubspec.yaml');
 
+  /// Use [path] to create a [Package].
+  ///
+  /// Users generally do not need to consider [rootPackage].
   factory Package.fromPath(String path, [Package rootPackage]) {
     return Package(Directory(path), rootPackage);
   }
@@ -35,6 +47,7 @@ class Package {
     return _rootPackage;
   }
 
+  /// Is this package a root package.
   bool get isRootPackage => identical(this, _rootPackage);
 
   YamlMap _yamlMap;
@@ -118,10 +131,14 @@ class Package {
     );
   }
 
-  File childFile(String key) {
-    return packageDir.child(key);
+  /// Get the [File] in the package by [name].
+  File childFile(String name) {
+    return packageDir.child(name);
   }
 
+  /// Get [Dependency] by [name].
+  ///
+  /// No recursion, only find dependency in yaml.
   Dependency getDependency(String name) {
     return dependencies.firstWhere(
       (element) => element.name == name,
@@ -130,7 +147,9 @@ class Package {
   }
 }
 
+/// Some [Directory] extension.
 extension DirExt on Directory {
+  /// Get [File] by [name].
   File child(String name) {
     var p = path;
     if (p.endsWith('/')) {
@@ -139,6 +158,7 @@ extension DirExt on Directory {
     return File('$path/$name');
   }
 
+  /// Get [Directory] by [name].
   Directory childDir(String name) {
     var p = path;
     if (p.endsWith('/')) {
@@ -148,7 +168,9 @@ extension DirExt on Directory {
   }
 }
 
+/// Some FileSystemEntity extension.
 extension FileSystemEntityExt on FileSystemEntity {
+  /// The name of the file system entity.
   String get name {
     final sep = path_library.separator;
     var p = absolute.path;
@@ -161,10 +183,13 @@ extension FileSystemEntityExt on FileSystemEntity {
     }
   }
 
+  /// Use [FileSystemEntity.identicalSync] to compare other [FileSystemEntity].
   bool identicalOther(FileSystemEntity other) {
     return FileSystemEntity.identicalSync(absolute.path, other.absolute.path);
   }
 
+  /// Use [path_library.relative] to get
+  /// the relative path with other [FileSystemEntity].
   String relativeOther(FileSystemEntity other) {
     return path_library.relative(absolute.path, from: other.absolute.path);
   }
