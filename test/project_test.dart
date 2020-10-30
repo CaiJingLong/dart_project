@@ -77,6 +77,7 @@ void main() {
       final flutterInfo = package.flutterInfo;
       expect(flutterInfo.useMaterialDesign, true);
 
+      expect(flutterInfo.isPlugin, false);
       expect(flutterInfo.haveAndroid, true);
       expect(flutterInfo.haveIOS, true);
       expect(flutterInfo.haveMacOS, true);
@@ -91,6 +92,12 @@ void main() {
       final pkg = dep.package;
       expect(pkg.name, 'flutter_plugin');
       expect(pkg.version, '0.0.1');
+
+      expect(pkg.isFlutter, true);
+
+      final flutterInfo = pkg.flutterInfo;
+      expect(flutterInfo.isApplication, false);
+      expect(flutterInfo.isPlugin, true);
     });
 
     test('analysis', () {

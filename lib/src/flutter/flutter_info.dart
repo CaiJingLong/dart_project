@@ -31,7 +31,16 @@ class FlutterInfo {
   /// to determine whether it is a Flutter project.
   bool get isApplication {
     final mainFile = rootDir.child('lib/main.dart');
+    if (!mainFile.existsSync()) {
+      return false;
+    }
     return SourceUtils.containsMethod(mainFile, 'main');
+  }
+
+  /// Check whether the flutter in the yaml file
+  /// has a plugin child node to judge.
+  bool get isPlugin {
+    return _map['plugin'] != null;
   }
 
   /// Whether to include the android folder.
