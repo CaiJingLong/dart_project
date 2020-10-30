@@ -15,7 +15,10 @@ class FlutterAsset {
     final dir = package.packageDir.childDir(dirAsset);
     return dir.listSync().whereType<File>().map((e) {
       final name = e.name;
-      final key = '$dir$name';
+      final file = dir.child(name);
+
+      final key = file.relativeOther(package.packageDir);
+
       return FlutterAsset(key, _assets, package);
     }).toList();
   }

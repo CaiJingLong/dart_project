@@ -123,11 +123,19 @@ class Package {
 
 extension DirExt on Directory {
   File child(String name) {
+    var p = path;
+    if (p.endsWith('/')) {
+      p = p.substring(0, p.length - 1);
+    }
     return File('$path/$name');
   }
 
   Directory childDir(String name) {
-    return Directory('$path/$name');
+    var p = path;
+    if (p.endsWith('/')) {
+      p = p.substring(0, p.length - 1);
+    }
+    return Directory('$p/$name');
   }
 }
 
@@ -146,5 +154,9 @@ extension FileSystemEntityExt on FileSystemEntity {
 
   bool identicalOther(FileSystemEntity other) {
     return FileSystemEntity.identicalSync(absolute.path, other.absolute.path);
+  }
+
+  String relativeOther(FileSystemEntity other) {
+    return path_library.relative(absolute.path, from: other.absolute.path);
   }
 }
