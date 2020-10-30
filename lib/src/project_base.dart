@@ -148,6 +148,22 @@ class Package {
       orElse: () => null,
     );
   }
+
+  /// Get dart files in `lib/` directory in package.
+  List<File> get dartSources {
+    final libFiles = files('lib');
+    return libFiles
+        .where(
+          (element) => element.name.endsWith('.dart'),
+        )
+        .toList();
+  }
+
+  /// Get files from [path] in package.
+  List<File> files(String path) {
+    final dir = packageDir.childDir(path);
+    return dir.listSync().whereType<File>().toList();
+  }
 }
 
 /// Some [Directory] extension.
