@@ -4,13 +4,31 @@ import 'package:project/project.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Extension test', () {
-    test('directory test', () {
+  group('FileSytemEntity extension test group: ', () {
+    test('FileSytemEntity test', () {
       expect(FileSystemEntity.identicalSync('lib/', 'lib'), true);
 
       expect(Directory('lib').name, 'lib');
       expect(Directory('lib/').name, 'lib');
       expect(File('pubspec.yaml').name, 'pubspec.yaml');
+
+      expect(Directory('lib/').identicalOther(Directory('lib/')), true);
+
+      final relative = File('lib/project.dart').relativeOther(
+        Directory('example/example.dart'),
+      );
+      expect(relative, '../../lib/project.dart');
+    });
+
+    test('Directory test', () {
+      final directory = Directory('.');
+      final libDir = directory.childDir('lib/');
+      expect(libDir.identicalOther(Directory('lib')), true);
+
+      final example1 = directory.child('example/example.dart');
+      final example2 = directory.childDir('example').child('example.dart');
+
+      expect(example1.identicalOther(example2), true);
     });
   });
 
@@ -60,6 +78,16 @@ void main() {
       for (final dep in deps) {
         expect(dep.rootPackage, package);
         expect(dep.package.rootPackage, package);
+      }
+    });
+
+    test('Sources', () {
+      final dartSources = package.dartSources;
+
+      expect(dartSources.isNotEmpty, true);
+
+      for (final dartFile in dartSources) {
+        expect(dartFile.name.endsWith('.dart'), true);
       }
     });
   });
