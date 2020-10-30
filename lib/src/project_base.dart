@@ -10,10 +10,13 @@ import 'packages_file_info.dart';
 
 /// [Package], usually the entry class.
 ///
+/// Example:
+///
 /// ```dart
 /// final package = Package.fromPath('flutter_project');
 ///
 /// print(package.name);
+/// print(package.version);
 /// ```
 class Package {
   /// Use [packageDir] to create a [Package].
