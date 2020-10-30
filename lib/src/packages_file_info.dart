@@ -71,14 +71,25 @@ class PackageInfo {
     return PackageInfo(package, key, value);
   }
 
+  /// The name of the package.
   final String name;
+
+  /// The uri string of the package.
   final String uriString;
+
+  /// The package instance.
   final Package package;
 
+  /// The [Uri] type of uri string.
   Uri get uri => Uri.parse(uriString);
 
+  /// Get the package directory.
   Directory get packageDirectory {
     final path = Directory.fromUri(uri).path;
+
+    /// If the dependency is introduced using the type of path,
+    /// the uri is not followed by the `file://` protocol prefix,
+    /// so we need to use another method to join the path.
 
     final target = path_library.join(
       package.rootPackage.packageDir.path,
