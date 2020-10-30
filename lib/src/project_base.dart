@@ -51,7 +51,7 @@ class Package {
   }
 
   /// Is this package a root package.
-  bool get isRootPackage => identical(this, _rootPackage);
+  bool get isRootPackage => identical(this, rootPackage);
 
   YamlMap _yamlMap;
 

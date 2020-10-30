@@ -147,6 +147,8 @@ void main() {
       expect(variants.containsKey('default'), true);
       expect(variants.containsKey('2.0x'), true);
       expect(variants.containsKey('3.0x'), false);
+
+      expect(asset.assetKey, 'assets/images/download.png');
     });
   });
 }

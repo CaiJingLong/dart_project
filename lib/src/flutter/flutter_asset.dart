@@ -35,7 +35,7 @@ class FlutterAsset {
     if (package.isRootPackage) {
       return key;
     } else {
-      return 'lib/$package.name/$key';
+      return 'lib/${package.name}/$key';
     }
   }
 
