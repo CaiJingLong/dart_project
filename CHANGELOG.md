@@ -1,3 +1,6 @@
-## 1.0.0
+# CHANGELOG
 
-- Initial version, created by Stagehand
+## 0.1.0
+
+- Initial version
+- Provides some basic project analysis capabilities.
