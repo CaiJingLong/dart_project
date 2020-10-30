@@ -101,5 +101,5 @@ void printPktInfo(Package pkg, int level, [bool showInfo = true]) {
 
 BSD 3.0 Style.
 
-[example]: https://github.com/CaiJingLong/dart_project/blob/main/example/project_example.dart
+[example]: https://github.com/CaiJingLong/dart_project/blob/main/example/example.dart
 [test.dart]: https://github.com/CaiJingLong/dart_project/blob/main/test/project_test.dart
