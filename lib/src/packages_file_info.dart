@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'project_base.dart';
+import 'package:path/path.dart' as path_library;
 
 /// The .packages file info the application project.
 class PackageFileInfo {
   /// You need create the instance of the `File`.
-  PackageFileInfo(this.file) : assert(file.existsSync());
+  PackageFileInfo(this.package, this.file) : assert(file.existsSync());
+
+  final Package package;
 
   /// The file of the .packages file.
   final File file;
@@ -16,7 +19,7 @@ class PackageFileInfo {
     final lines = file.readAsLinesSync();
 
     for (final line in lines) {
-      final packageInfo = PackageInfo.fromLine(line);
+      final packageInfo = PackageInfo.fromLine(package, line);
 
       if (packageInfo == null) {
         continue;
@@ -52,10 +55,10 @@ class PackageFileInfo {
 
 /// The package info
 class PackageInfo {
-  const PackageInfo(this.name, this.uriString);
+  PackageInfo(this.package, this.name, this.uriString);
 
   /// Create the instance use the line string of the .package file.
-  factory PackageInfo.fromLine(String line) {
+  factory PackageInfo.fromLine(Package package, String line) {
     if (line.startsWith('#')) {
       return null;
     }
@@ -65,15 +68,23 @@ class PackageInfo {
     final key = line.substring(0, splitter);
     final value = line.substring(splitter + 1);
 
-    return PackageInfo(key, value);
+    return PackageInfo(package, key, value);
   }
 
   final String name;
   final String uriString;
+  final Package package;
 
   Uri get uri => Uri.parse(uriString);
 
   Directory get packageDirectory {
-    return Directory.fromUri(uri).parent;
+    final path = Directory.fromUri(uri).path;
+
+    final target = path_library.join(
+      package.rootPackage.packageDir.path,
+      path,
+    );
+
+    return Directory(target).parent;
   }
 }

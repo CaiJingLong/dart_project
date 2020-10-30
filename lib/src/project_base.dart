@@ -35,6 +35,8 @@ class Package {
     return _rootPackage;
   }
 
+  bool get isRootPackage => identical(this, _rootPackage);
+
   YamlMap _yamlMap;
 
   /// Convert the yaml file to [YamlMap].
@@ -99,7 +101,7 @@ class Package {
   /// The .package file info, you must run `pub get` or `flutter pub get` to make it.
   PackageFileInfo get packageFileInfo {
     _packageFileInfo ??=
-        PackageFileInfo(File('${rootPackage.packageDir.path}/.packages'));
+        PackageFileInfo(this, File('${rootPackage.packageDir.path}/.packages'));
 
     return _packageFileInfo;
   }
@@ -118,6 +120,13 @@ class Package {
 
   File childFile(String key) {
     return packageDir.child(key);
+  }
+
+  Dependency getDependency(String name) {
+    return dependencies.firstWhere(
+      (element) => element.name == name,
+      orElse: () => null,
+    );
   }
 }
 

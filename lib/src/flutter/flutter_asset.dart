@@ -31,7 +31,13 @@ class FlutterAsset {
 
   final File file;
 
-  String get assetKey {}
+  String get assetKey {
+    if (package.isRootPackage) {
+      return key;
+    } else {
+      return 'lib/$package.name/$key';
+    }
+  }
 
   FlutterAssetVariants _variants;
 

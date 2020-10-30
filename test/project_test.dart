@@ -85,6 +85,14 @@ void main() {
       expect(flutterInfo.haveWindows, false);
     });
 
+    test('plugin dependency', () {
+      final dep = package.getDependency('flutter_plugin');
+      expect(dep.name, 'flutter_plugin');
+      final pkg = dep.package;
+      expect(pkg.name, 'flutter_plugin');
+      expect(pkg.version, '0.0.1');
+    });
+
     test('analysis', () {
       final flutterInfo = package.flutterInfo;
       expect(flutterInfo.isApplication, true);
