@@ -1,6 +1,4 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
+/// Use a simple API to parse dart projects.
 library project;
 
 export 'src/project_base.dart';
