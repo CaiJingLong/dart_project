@@ -1,12 +1,23 @@
 import 'package:meta/meta.dart';
 import 'package:yaml/yaml.dart';
 
+import '../project_base.dart';
+
 /// Describes all the flutter fonts in a package.
 class FlutterFonts {
+  /// Create instance with [package] and [list].
+  FlutterFonts({
+    @required this.package,
+    @required YamlList list,
+  }) : list = list;
+
+  /// The package of the font.
+  final Package package;
+
+  /// The flutter font of yaml node.
   final YamlList list;
 
-  FlutterFonts({YamlList list}) : list = list;
-
+  /// Get the list of [FlutterFont].
   List<FlutterFont> get fonts {
     final result = <FlutterFont>[];
 
@@ -17,12 +28,12 @@ class FlutterFonts {
     for (final node in list) {
       final String family = node['family'];
 
-      final font = FlutterFont(familyName: family);
+      final font = FlutterFont(familyName: family, package: package);
 
       final YamlList assets = node['fonts'];
 
       for (final asset in assets) {
-        final flutterFontAsset = FlutterFontAsset.fromYamlNode(asset);
+        final flutterFontAsset = FlutterFontAsset.fromYamlNode(package, asset);
         font.add(flutterFontAsset);
       }
 
@@ -35,16 +46,22 @@ class FlutterFonts {
 
 /// Describes an font of the Flutter.
 class FlutterFont {
+  /// Create instance with [package] and [familyName].
+  FlutterFont({
+    @required this.package,
+    @required this.familyName,
+  });
+
+  /// The package of the font.
+  final Package package;
+
   /// The family name of the font.
   final String familyName;
 
   /// The assets of the font.
   final List<FlutterFontAsset> assets = <FlutterFontAsset>[];
 
-  FlutterFont({
-    @required this.familyName,
-  });
-
+  /// Add the [flutterFontAsset] to the [assets] list.
   void add(FlutterFontAsset flutterFontAsset) {
     assets.add(flutterFontAsset);
   }
@@ -52,29 +69,25 @@ class FlutterFont {
 
 /// An asset used to describe a font.
 class FlutterFontAsset {
-  final String assetKey;
-  final FontStyle style;
-
-  /// Normal is 400.
-  ///
-  /// The value range is between 100 with 900.
-  final int weight;
-
   /// Create an instance of [FlutterFontAsset].
   FlutterFontAsset({
-    @required this.assetKey,
+    @required this.key,
+    @required this.package,
     this.style = FontStyle.normal,
     this.weight = 400,
   });
 
   /// Create [FlutterFontAsset] instance from yaml node data.
-  static FlutterFontAsset fromYamlNode(assetNode) {
+  static FlutterFontAsset fromYamlNode(Package package, assetNode) {
     if (assetNode == null) {
       return null;
     }
 
     if (assetNode is String) {
-      return FlutterFontAsset(assetKey: assetNode);
+      return FlutterFontAsset(
+        package: package,
+        key: assetNode,
+      );
     }
 
     if (assetNode is YamlMap) {
@@ -90,7 +103,8 @@ class FlutterFontAsset {
       final weight = int.tryParse(weightValue) ?? 400;
 
       return FlutterFontAsset(
-        assetKey: key,
+        package: package,
+        key: key,
         weight: weight,
         style: fontStyle,
       );
@@ -98,6 +112,27 @@ class FlutterFontAsset {
 
     return null;
   }
+
+  /// The package of the font.
+  final Package package;
+
+  /// The key of the font.
+  ///
+  /// If you want to use it in application, you need use [assetKey].
+  final String key;
+
+  /// The font style.
+  ///
+  /// See [FontStyle] for more information.
+  final FontStyle style;
+
+  /// Normal is 400.
+  ///
+  /// The value range is between 100 with 900.
+  final int weight;
+
+  /// You can use it in your Flutter application.
+  String get assetKey => 'packages/${package.name}/$key';
 }
 
 /// Corresponding to the FontStyle in Flutter.

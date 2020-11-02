@@ -44,7 +44,7 @@ if(package.isFlutter) {
 
 Example 2:
 
-like use `flutter pub deps` or `pub deps`.
+like use `flutter pub deps` or `pub deps`. The output you can preview [example_log][].
 
 ```dart
 import 'package:project/project.dart';
@@ -102,4 +102,5 @@ void printPktInfo(Package pkg, int level, [bool showInfo = true]) {
 BSD 3.0 Style.
 
 [example]: https://github.com/CaiJingLong/dart_project/blob/main/example/example.dart
+[example_log]: https://github.com/CaiJingLong/dart_project/blob/main/example/example.log
 [test.dart]: https://github.com/CaiJingLong/dart_project/blob/main/test/project_test.dart

@@ -2,6 +2,9 @@ import 'package:project/project.dart';
 
 Set<String> names = {};
 
+/// The file will output some info: see [example.log][]
+///
+/// [example.log]: https://github.com/CaiJingLong/dart_project/blob/main/example/example.log
 void main() {
   final rootPkg = Package.fromPath('.');
 

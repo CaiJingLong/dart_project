@@ -1,5 +1,14 @@
 import 'package:project/project.dart';
 
+/// The dart file will output:
+/// ```log
+/// assets/images/download.png:
+///   file: /Users/jinglongcai/code/dart/self/project/example/flutter_project/assets/images/download.png
+/// assets/images/2.0x/download.png:
+///   file: /Users/jinglongcai/code/dart/self/project/example/flutter_project/assets/images/2.0x/download.png
+/// packages/flutter_plugin/assets/wechat_pay.png:
+///   file: /Users/jinglongcai/code/dart/self/project/example/flutter_project/../flutter_plugin/assets/wechat_pay.png
+/// ```
 void main() {
   final pkg = Package.fromPath('example/flutter_project');
   final assets = <FlutterAsset>[];

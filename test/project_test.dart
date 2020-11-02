@@ -191,6 +191,9 @@ void main() {
       expect(asset0.style, FontStyle.normal);
       expect(asset0.weight, 400);
 
+      expect(asset0.key, 'fonts/Lato-Regular.ttf');
+      expect(asset0.assetKey, 'packages/flutter_plugin/fonts/Lato-Regular.ttf');
+
       final asset1 = fontAsset[1];
       expect(asset1.style, FontStyle.normal);
       expect(asset1.weight, 800);

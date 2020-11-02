@@ -1,6 +1,6 @@
 name: project
 description: Parse the dart project and convert it into a dart node, so that some command-line tools can quickly parse the project.
-version: 0.1.1
+version: 0.1.2
 homepage: https://github.com/CaiJingLong/dart_project
 
 environment:

@@ -117,7 +117,10 @@ class FlutterInfo {
   }
 
   FlutterFonts get fonts {
-    return FlutterFonts(list: _map['fonts']);
+    return FlutterFonts(
+      list: _map['fonts'],
+      package: package,
+    );
   }
 
   /// Whether the flutter package contains assets.

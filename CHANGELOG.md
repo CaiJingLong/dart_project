@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 0.1.2
+
+Features:
+
+- Support flutter fonts.
+
+Fix:
+
+- The assetKey bug for flutter assets in flutter plugin.
+
 ## 0.1.1
 
 Fix:
