@@ -149,6 +149,17 @@ void main() {
       expect(variants.containsKey('3.0x'), false);
 
       expect(asset.assetKey, 'assets/images/download.png');
+
+      final pluginDep = package.dependencies.firstWhere(
+        (element) => element.name == 'flutter_plugin',
+        orElse: () => null,
+      );
+      final pluginPkg = pluginDep.package;
+
+      expect(pluginPkg.isFlutter, true);
+      final pluginInfo = pluginPkg.flutterInfo;
+      final pluginAssets = pluginInfo.assets;
+      expect(pluginAssets.length, 1);
     });
   });
 }
