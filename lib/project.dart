@@ -9,5 +9,3 @@ export 'src/dependency.dart';
 export 'src/flutter/flutter_asset.dart';
 export 'src/flutter/flutter_info.dart';
 export 'src/source_utils.dart';
-
-export 'package:pub_semver/pub_semver.dart';
