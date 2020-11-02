@@ -161,5 +161,39 @@ void main() {
       final pluginAssets = pluginInfo.assets;
       expect(pluginAssets.length, 1);
     });
+
+    test('fonts', () {
+      final flutterInfo = package.flutterInfo;
+      expect(flutterInfo.containsFonts(), false);
+
+      final pluginDep = package.dependencies.firstWhere(
+        (element) => element.name == 'flutter_plugin',
+        orElse: () => null,
+      );
+
+      final pluginPkg = pluginDep.package;
+      expect(pluginPkg.isFlutter, true);
+      final pluginInfo = pluginPkg.flutterInfo;
+
+      expect(pluginInfo.containsFonts(), true);
+
+      final fonts = pluginInfo.fonts;
+      final fontList = fonts.fonts;
+
+      expect(fontList.length, 1);
+      final font = fontList[0];
+
+      final fontAsset = font.assets;
+
+      expect(fontAsset.length, 2);
+      final asset0 = fontAsset[0];
+
+      expect(asset0.style, FontStyle.normal);
+      expect(asset0.weight, 400);
+
+      final asset1 = fontAsset[1];
+      expect(asset1.style, FontStyle.normal);
+      expect(asset1.weight, 800);
+    });
   });
 }

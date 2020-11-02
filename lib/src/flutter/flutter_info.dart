@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'flutter_asset.dart';
 import '../project_base.dart';
 import '../source_utils.dart';
+import 'flutter_font.dart';
 
 /// Some info for Flutter project.
 class FlutterInfo {
@@ -109,6 +110,14 @@ class FlutterInfo {
     }
 
     return assets;
+  }
+
+  bool containsFonts() {
+    return _map.containsKey('fonts');
+  }
+
+  FlutterFonts get fonts {
+    return FlutterFonts(list: _map['fonts']);
   }
 
   /// Whether the flutter package contains assets.
